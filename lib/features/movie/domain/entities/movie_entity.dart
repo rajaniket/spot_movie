@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -70,7 +69,6 @@ class MovieEntity extends Equatable {
     if (actor1 != null) details.add('Actor 1: $actor1');
 
     final val = details.join('\n');
-    log(val);
     return val;
   }
 

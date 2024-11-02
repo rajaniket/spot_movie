@@ -8,7 +8,6 @@ environment:
   sdk: '>=3.4.3 <4.0.0'
 
 dependencies:
-  connectivity_plus: ^6.1.0
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   equatable: ^2.0.5
@@ -23,6 +22,7 @@ dependencies:
   google_maps_flutter: ^2.9.0
   injectable: ^2.5.0
   logger: ^2.4.0
+  mockito: ^5.4.4
   permission_handler: ^10.3.0
   shared_preferences: ^2.3.2
 

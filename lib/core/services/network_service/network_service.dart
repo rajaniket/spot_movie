@@ -1,6 +1,15 @@
 import 'package:dio/dio.dart';
-import 'logger_service/logging_interceptor.dart';
+import 'package:injectable/injectable.dart';
+import '../logger_service/logging_interceptor.dart';
 
+@module
+abstract class NetworkModule {
+  @lazySingleton
+  Dio get dio => Dio();
+}
+
+/// A service for making network requests using Dio.
+@lazySingleton
 class NetworkService {
   NetworkService({
     required Dio dio,

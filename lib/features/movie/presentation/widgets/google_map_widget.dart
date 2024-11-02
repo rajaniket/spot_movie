@@ -67,7 +67,7 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget>
                 IconButton(
                   onPressed: widget.onMyLocationTap,
                   icon: CircleAvatar(
-                    backgroundColor: AppColors.buttonBackgroundColorLight,
+                    backgroundColor: AppColors.elementBackgroundColorLight,
                     radius: 25,
                     child: Icon(
                       Icons.my_location_outlined,

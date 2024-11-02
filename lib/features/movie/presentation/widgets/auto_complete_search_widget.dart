@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:spot_movie/core/theme/app_dimensions.dart';
 import 'package:spot_movie/features/movie/domain/entities/movie_entity.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -53,29 +52,29 @@ class _AutoCompleteSearchWidgetState extends State<AutoCompleteSearchWidget> {
           decoration: InputDecoration(
             hintText: 'Search movie',
             contentPadding: const EdgeInsets.fromLTRB(25, 5, 10, 5),
-            fillColor: const Color(0xFF1E1D1D).withOpacity(0.97),
+            fillColor: AppColors.elementBackgroundColorLight,
             filled: true,
             disabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
-                Radius.circular(AppDimensions.largeRadius),
+                Radius.circular(20),
               ),
               borderSide: textFieldBorder,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
-                Radius.circular(AppDimensions.largeRadius),
+                Radius.circular(20),
               ),
               borderSide: textFieldBorder,
             ),
             border: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
-                Radius.circular(AppDimensions.largeRadius),
+                Radius.circular(20),
               ),
               borderSide: textFieldBorder,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
-                Radius.circular(AppDimensions.largeRadius),
+                Radius.circular(20),
               ),
               borderSide: textFieldBorder,
             ),
@@ -99,7 +98,7 @@ class _AutoCompleteSearchWidgetState extends State<AutoCompleteSearchWidget> {
       },
       itemBuilder: (context, suggestion) {
         return ColoredBox(
-          color: const Color(0xFF1E1D1D).withOpacity(0.97),
+          color: AppColors.elementBackgroundColorLight,
           child: ListTile(
             leading: const Icon(Icons.movie_rounded),
             title: Text(suggestion.title),

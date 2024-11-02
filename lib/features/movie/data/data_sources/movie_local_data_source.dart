@@ -1,5 +1,7 @@
 import 'dart:convert';
-import '../../../../core/services/storage_service.dart';
+import 'package:injectable/injectable.dart';
+import '../../../../core/constants/constants.dart';
+import '../../../../core/services/storage_service/storage_service.dart';
 import '../models/movie_models.dart';
 
 abstract class MovieLocalDataSource {
@@ -8,26 +10,30 @@ abstract class MovieLocalDataSource {
   Future<bool> isCacheExpired();
 }
 
+@Injectable(as: MovieLocalDataSource)
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
-  const MovieLocalDataSourceImpl({
-    required this.sharedPreferencesStorageService,
-  });
+  const MovieLocalDataSourceImpl(this.sharedPreferencesStorageService);
   final StorageService sharedPreferencesStorageService;
 
+  /// Caches a list of movies in the local storage.
   @override
   Future<void> cacheMovies(List<MovieModel> movies) async {
     final data = jsonEncode(movies.map((movie) => movie.toJson()).toList());
-    await sharedPreferencesStorageService.set('cached_movies', data);
     await sharedPreferencesStorageService.set(
-      'cache_time',
+      SharedPreferencesKeys.cachedMovies,
+      data,
+    );
+    await sharedPreferencesStorageService.set(
+      SharedPreferencesKeys.cacheTime,
       DateTime.now().millisecondsSinceEpoch,
     );
   }
 
+  /// Retrieves the cached movies from local storage.
   @override
   Future<List<MovieModel>> getCachedMovies() async {
-    final data =
-        await sharedPreferencesStorageService.get<String?>('cached_movies');
+    final data = await sharedPreferencesStorageService
+        .get<String?>(SharedPreferencesKeys.cachedMovies);
     if (data != null) {
       return (jsonDecode(data) as List)
           .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
@@ -36,13 +42,14 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     return [];
   }
 
+  /// Checks if the cache has expired based on the cache time.
   @override
   Future<bool> isCacheExpired() async {
-    final cacheTime =
-        await sharedPreferencesStorageService.get<int?>('cache_time');
+    final cacheTime = await sharedPreferencesStorageService
+        .get<int?>(SharedPreferencesKeys.cacheTime);
     if (cacheTime == null) return true;
     final difference = DateTime.now()
         .difference(DateTime.fromMillisecondsSinceEpoch(cacheTime));
-    return difference.inHours >= 24;
+    return difference.inSeconds >= 5;
   }
 }
