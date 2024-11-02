@@ -9,4 +9,6 @@ linter:
     depend_on_referenced_packages: false
     
 analyzer:
+  errors:
+    use_setters_to_change_properties: ignore
   exclude: ['**.freezed.dart', '**.g.dart']

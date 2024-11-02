@@ -1,31 +1,40 @@
 import 'package:equatable/equatable.dart';
+import 'package:spot_movie/features/movie/domain/entities/movie_entity.dart';
+import '../ui_entity/errors_enum.dart';
+import '../ui_entity/map_marker.dart';
 
-import '../../domain/entities/movie_entity.dart';
+class MovieState extends Equatable {
+  const MovieState({
+    required this.movies,
+    this.errorType,
+    this.selectedMovie,
+    this.isLoading,
+  });
 
-abstract class MovieState extends Equatable {}
-
-class MovieInitial extends MovieState {
-  @override
-  List<Object?> get props => [];
-}
-
-class MovieLoading extends MovieState {
-  @override
-  List<Object?> get props => [];
-}
-
-class MovieLoaded extends MovieState {
-  MovieLoaded(this.movies);
-  final List<MovieEntity> movies;
+  final ErrorType? errorType;
+  final MovieMarkerEntity? selectedMovie;
+  final bool? isLoading;
+  final List<MovieEntity>? movies;
 
   @override
-  List<Object?> get props => [movies];
-}
+  List<Object?> get props => [
+        errorType,
+        selectedMovie,
+        isLoading,
+        movies,
+      ];
 
-class MovieError extends MovieState {
-  MovieError(this.message);
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
+  MovieState copyWith({
+    ErrorType? errorType,
+    MovieMarkerEntity? selectedMovie,
+    bool? isLoading,
+    List<MovieEntity>? movies,
+  }) {
+    return MovieState(
+      errorType: errorType ?? this.errorType,
+      selectedMovie: selectedMovie ?? this.selectedMovie,
+      isLoading: isLoading ?? this.isLoading,
+      movies: movies ?? this.movies,
+    );
+  }
 }

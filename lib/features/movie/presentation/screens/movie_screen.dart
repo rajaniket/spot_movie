@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:spot_movie/features/movie/presentation/cubit/movie_cubit.dart';
 import '../../domain/usecases/get_movies_use_case.dart';
 import '../cubit/movie_state.dart';
 import '../widgets/auto_complete_search_widget.dart';
+import '../widgets/google_map_widget.dart';
 
 class MovieView extends StatefulWidget {
   const MovieView({super.key});
@@ -46,45 +49,75 @@ class _MovieViewState extends State<MovieView> {
               centerTitle: true,
               title: const Text(
                 'Spot Movie Location',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               ),
             ),
             body: Stack(
               children: [
+                GoogleMapWidget(
+                  onMapCreated: context.read<MovieCubit>().setMapController,
+                  markers: state.selectedMovie?.marker != null
+                      ? {state.selectedMovie!.marker!}
+                      : null,
+                  onMyLocationTap: () {
+                    context.read<MovieCubit>().getCurrentLocation(context);
+                  },
+                ),
                 Padding(
                   padding: EdgeInsets.only(
                     left: 15,
                     right: 15,
-                    top: AppBar().preferredSize.height + 80,
+                    top: kToolbarHeight +
+                        MediaQuery.of(context).padding.top +
+                        20,
                   ),
-                  child: Column(
-                    children: [
-                      if (state is MovieLoaded)
-                        AutoCompleteSearchWidget(
-                          textController: textController,
-                          suggestionsCallback: (query) async {
-                            final movies = await context
-                                .read<MovieCubit>()
-                                .searchMovies(query);
-                            return movies;
-                          },
-                          onClearTap: (controller) {
-                            controller.clear();
-                          },
-                          onSelected: (movie) {
-                            textController.text = movie.title;
-                          },
-                        ),
-                      if (state is MovieLoading)
-                        const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      if (state is MovieError)
-                        const Center(
-                          child: Text('Error'),
-                        ),
-                    ],
+                  child: AbsorbPointer(
+                    absorbing:
+                        !(state.movies != null && state.movies!.isNotEmpty),
+                    child: Opacity(
+                      opacity:
+                          (state.movies != null && state.movies!.isNotEmpty)
+                              ? 1
+                              : 0.5,
+                      child: AutoCompleteSearchWidget(
+                        textController: textController,
+                        suggestionsCallback: (query) async {
+                          final movies = await context
+                              .read<MovieCubit>()
+                              .searchMovies(query);
+                          return movies;
+                        },
+                        onClearTap: (controller) {
+                          controller.clear();
+                        },
+                        onSelected: (movie) {
+                          textController.text = movie.title;
+                          context.read<MovieCubit>().onMovieSelect(
+                                selectedMovie: movie,
+                                context: context,
+                              );
+                        },
+                      ),
+                    ),
                   ),
                 ),
+                if (state.isLoading != null && state.isLoading!)
+                  SizedBox.expand(
+                    child: ColoredBox(
+                      color: Colors.black38,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           );

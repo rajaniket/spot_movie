@@ -24,22 +24,29 @@ class AutoCompleteSearchWidget extends StatefulWidget {
 }
 
 class _AutoCompleteSearchWidgetState extends State<AutoCompleteSearchWidget> {
+  late BorderSide textFieldBorder;
+
   @override
-  Widget build(BuildContext context) {
-    final textFieldBorder = BorderSide(
+  void initState() {
+    textFieldBorder = BorderSide(
       color: AppColors.borderColor,
       width: 1.5,
     );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return TypeAheadField<MovieEntity>(
       controller: widget.textController,
       suggestionsCallback: widget.suggestionsCallback,
       onSelected: widget.onSelected,
       hideOnEmpty: true,
+      hideKeyboardOnDrag: true,
       builder: (context, controller, focusNode) {
         return TextField(
           controller: controller,
           focusNode: focusNode,
-          autofocus: true,
           onTapOutside: (_) {
             focusNode.unfocus();
           },
