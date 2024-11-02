@@ -56,7 +56,7 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget>
                     });
                   },
                   icon: Switch(
-                    value: isDarkMode,
+                    value: !isDarkMode,
                     onChanged: (value) {
                       setState(() {
                         isDarkMode = !isDarkMode;

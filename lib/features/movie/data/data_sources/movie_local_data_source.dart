@@ -50,6 +50,6 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     if (cacheTime == null) return true;
     final difference = DateTime.now()
         .difference(DateTime.fromMillisecondsSinceEpoch(cacheTime));
-    return difference.inSeconds >= 5;
+    return difference.inHours >= 1;
   }
 }
