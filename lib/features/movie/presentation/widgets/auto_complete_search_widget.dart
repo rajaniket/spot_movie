@@ -49,7 +49,6 @@ class _AutoCompleteSearchWidgetState extends State<AutoCompleteSearchWidget> {
           onTapOutside: (_) {
             focusNode.unfocus();
           },
-          keyboardType: TextInputType.none,
           decoration: InputDecoration(
             hintText: 'Search movie',
             contentPadding: const EdgeInsets.fromLTRB(25, 5, 10, 5),
