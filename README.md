@@ -8,6 +8,12 @@ SpotMovie is an app that lets you discover where movies have been filmed in San 
 
 ---
 
+## 🎥 Demo Video
+
+https://github.com/user-attachments/assets/526057c0-8d53-4c55-9c27-6adb66a48e23
+
+---
+
 ## 🌟 Key Features
 
 - **Autocomplete Search**: Quickly find SF movies based on title.
